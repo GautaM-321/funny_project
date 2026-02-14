@@ -240,14 +240,15 @@
         ];
 
         let noClickCount = 0;
+        const MAX_YES_BUTTON_SCALE = 3; // Maximum scale for Yes button
 
         // Handle "No" button click
         noBtn.addEventListener('click', function() {
             message.textContent = noMessages[noClickCount % noMessages.length];
             noClickCount++;
             
-            // Make the Yes button bigger with each No click
-            const currentSize = 1 + (noClickCount * 0.1);
+            // Make the Yes button bigger with each No click (capped at MAX_YES_BUTTON_SCALE)
+            const currentSize = Math.min(1 + (noClickCount * 0.1), MAX_YES_BUTTON_SCALE);
             yesBtn.style.transform = `scale(${currentSize})`;
             
             // Shake the No button
@@ -266,10 +267,12 @@
 
         // Create floating hearts animation
         function createFloatingHearts() {
+            const TOTAL_HEARTS = 50;
+            const HEART_LIFETIME_MS = 7000;
             const heartsContainer = document.getElementById('hearts');
             const heartSymbols = ['❤️', '💕', '💖', '💗', '💝', '💘'];
             
-            for (let i = 0; i < 50; i++) {
+            for (let i = 0; i < TOTAL_HEARTS; i++) {
                 setTimeout(() => {
                     const heart = document.createElement('div');
                     heart.className = 'heart';
@@ -282,7 +285,7 @@
                     // Remove heart after animation
                     setTimeout(() => {
                         heart.remove();
-                    }, 7000);
+                    }, HEART_LIFETIME_MS);
                 }, i * 100);
             }
         }
